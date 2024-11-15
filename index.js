@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const connectToDB = require("./src/connection/database");
-const product_routes = require("./src/routes/products");
+const product_routes = require("./src/routes/products/products_route");
 
 connectToDB()
   .then(() => console.log("Connection Established"))
