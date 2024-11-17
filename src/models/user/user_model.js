@@ -7,6 +7,7 @@ const userSchema = mongoose.Schema({
     {
       product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
       quantity: { type: Number, required: true, min: 1 },
+      product_price: { type: Number },
     },
   ],
 });

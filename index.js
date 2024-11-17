@@ -8,12 +8,14 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routers
-const product_routes = require("./src/routes/products/products_route");
-const user_route = require("./src/routes/user/user_route");
+const product_router = require("./src/routes/products/products_route");
+const user_router = require("./src/routes/user/user_route");
+const cart_router = require("./src/routes/cart/cart_route");
 
 // Route mappings
-app.use("/api/v1/products", product_routes);
-app.use("/api/v1/user", user_route);
+app.use("/api/v1/products", product_router);
+app.use("/api/v1/user", user_router);
+app.use("/api/v1/cart",cart_router);
 
 // Middleware to handle invalid routes (404 errors)
 app.use((req, res, next) => {
