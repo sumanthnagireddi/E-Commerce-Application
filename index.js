@@ -1,11 +1,21 @@
 const express = require("express");
 const app = express();
+const http = require("http");
 require("dotenv").config();
 const connectToDB = require("./src/connection/database");
 const cookieParser = require("cookie-parser");
+const path = require("node:path");
+const { Server } = require("socket.io");
+const server = http.createServer(app);
+const io = new Server(server);
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+
+// ejs template configuration
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "src", "views"));
 
 // Routers
 const product_router = require("./src/routes/products/products_route");
@@ -15,7 +25,9 @@ const cart_router = require("./src/routes/cart/cart_route");
 // Route mappings
 app.use("/api/v1/products", product_router);
 app.use("/api/v1/user", user_router);
-app.use("/api/v1/cart",cart_router);
+app.use("/api/v1/cart", cart_router);
+
+
 
 // Middleware to handle invalid routes (404 errors)
 app.use((req, res, next) => {
@@ -31,6 +43,8 @@ app.use((err, req, res, next) => {
     message: err.message || "Internal Server Error",
   });
 });
+
+
 
 // Initialize database connection and start the server
 connectToDB()

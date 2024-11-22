@@ -31,13 +31,14 @@ const loginUser = async (req, res, next) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username: username });
     if (!user) {
-      throw new Error("Invalid credentials");
+      throw new Error("User not found");
     }
     const isValidPassword = await validatePassword(user.password, password);
     if (isValidPassword) {
       const jwtToken = await getJWTtoken(user);
       res.cookie("token", jwtToken);
-      res.status(200).send(user);
+      res.redirect("api/v1/products")
+      // res.status(200).send(user)
     } else {
       throw new Error("Invalid credentials");
     }
