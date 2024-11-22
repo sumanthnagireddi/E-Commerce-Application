@@ -37,7 +37,7 @@ const loginUser = async (req, res, next) => {
     if (isValidPassword) {
       const jwtToken = await getJWTtoken(user);
       res.cookie("token", jwtToken);
-      res.redirect("api/v1/products")
+      res.redirect("api/v1/products");
       // res.status(200).send(user)
     } else {
       throw new Error("Invalid credentials");
@@ -46,4 +46,16 @@ const loginUser = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = { registerUser, loginUser };
+
+const logoutUser = (req, res, next) => {
+  try {
+    // Clear the authentication cookie
+    res.clearCookie("token");
+
+    res.redirect("/api/v1/products");
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { registerUser, loginUser, logoutUser };
