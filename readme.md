@@ -62,23 +62,27 @@ src/
 
 ## API Endpoints
 ### User Routes
-Method	Endpoint	Description
-POST	/api/v1/user/login	Login user
-POST	/api/v1/user/signup	Register a new user
-Product Routes
-Method	Endpoint	Description
-GET	/api/v1/products	Get all products
-GET	/api/v1/products/:id	Get product by ID
-Cart Routes
-Method	Endpoint	Description
-GET	/api/v1/cart	Get cart items
-POST	/api/v1/cart/add	Add item to cart
-POST	/api/v1/cart/remove	Remove item from cart
-Real-Time Features
-This project uses Socket.IO for real-time communication:
+## API Routes Documentation
 
-Event: cartUpdated
-Triggered whenever the cart is updated.
-Updates the UI for all connected users.
-css
-Copy code
+### User Routes
+
+| Method | Endpoint           | Description         |
+|--------|--------------------|---------------------|
+| POST   | /api/v1/user/login | Login user          |
+| POST   | /api/v1/user/signup| Register a new user |
+
+### Product Routes
+
+| Method | Endpoint                | Description        |
+|--------|-------------------------|--------------------|
+| GET    | /api/v1/products        | Get all products   |
+| GET    | /api/v1/products/:id    | Get product by ID  |
+
+### Cart Routes
+
+| Method | Endpoint                | Description         |
+|--------|-------------------------|---------------------|
+| GET    | /api/v1/cart            | Get cart items      |
+| POST   | /api/v1/cart/add        | Add item to cart    |
+| POST   | /api/v1/cart/remove     | Remove item from cart|
+
