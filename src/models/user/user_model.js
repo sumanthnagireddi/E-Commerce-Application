@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   cart: [
     {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+      product_name:{type:String,required:true},
       quantity: { type: Number, required: true, min: 1 },
       product_price: { type: Number },
     },

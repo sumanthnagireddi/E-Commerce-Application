@@ -1,14 +1,13 @@
 const User = require("../../models/user/user_model");
 const getAggregate = require("../../utils/getAggregate");
+const { getProductById } = require("../products/products");
 
 const getCartItems = async (req, res, next) => {
   try {
     const user = req.user;
-    const cartItems = user?.cart;
-    if (!cartItems || cartItems.length == 0) {
-      throw new Error("no items found in cart.");
-    }
-    res.status(200).json(cartItems);
+    const cartItems = user?.cart || [];
+    const getTotals = await getAggregate(user);
+    res.render("cart", { data: { cart: cartItems, total: getTotals } });
   } catch (error) {
     next(error);
   }
@@ -19,7 +18,6 @@ const addToCart = async (req, res, next) => {
     // fetching user and payload from api
     const user = req.user;
     const cartItem = req.body;
-
     // checking whether product is there in user cart or not
     const isProductFoundinTheCart = await User.findOne({
       _id: user._id,
@@ -31,7 +29,7 @@ const addToCart = async (req, res, next) => {
     const existingQuantity = userFromDB.cart.find(
       (item) => item._id.toString() == cartItem._id.toString()
     );
-    
+
     if (isProductFoundinTheCart) {
       const userCart = await User.findOneAndUpdate(
         { _id: user._id, "cart._id": cartItem._id },
@@ -47,7 +45,6 @@ const addToCart = async (req, res, next) => {
         },
         { new: true }
       );
-      const getTotals = await getAggregate(userFromDB);
       return res.status(200).send(userCart);
     } else {
       const userCart = await User.findByIdAndUpdate(
@@ -114,4 +111,37 @@ const removeFromCart = async (req, res, next) => {
   }
 };
 
-module.exports = { getCartItems, addToCart, removeFromCart };
+const deleteItemFromCart = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const id = req.params.id;
+    // Remove the item from the cart
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      { $pull: { cart: { _id: id } } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .send({ message: "User not found or item not in cart." });
+    }
+
+    res.redirect("api/v1/products");
+
+    // return res.status(200).send({
+    //   message: "Item removed from cart successfully.",
+    //   cart: updatedUser.cart,
+    // });
+  } catch (error) {
+    next(error); // Pass any errors to the error-handling middleware
+  }
+};
+
+module.exports = {
+  getCartItems,
+  addToCart,
+  removeFromCart,
+  deleteItemFromCart,
+};
