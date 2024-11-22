@@ -6,6 +6,11 @@ This is a real-time shopping cart application built using **Express.js**, **EJS*
 
 ---
 
+https://github.com/sumanthnagireddi/E-Commerce-Application;
+
+username:admin;
+password:1234
+
 ## Features
 
 - **User Authentication**: Secure user login and session management.
